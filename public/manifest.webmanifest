@@ -1,0 +1,10 @@
+{
+    "background_color": "#242424",
+    "description": "PeerConnect",
+    "display": "standalone",
+    "icons": [
+    ],
+    "name": "PeerConnect",
+    "short_name": "PeerConnect",
+    "start_url": "/peerconnect/index.html"
+  }
