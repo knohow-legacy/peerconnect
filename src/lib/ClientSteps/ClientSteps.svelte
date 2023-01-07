@@ -9,12 +9,13 @@
     import { targetData, userData, view } from '../../GlobalStore';
     import API from '../../API';
     import Filters from '../Filters/Filters.svelte';
+    import { writable } from 'svelte/store';
     let step = 1;
 
     let cameraOK = false;
     let startedMatching = Date.now();
-    let filters = []
     let interval;
+    let filterStore = writable([]);
 
     function step1(isClient: boolean) {
         if (!isClient) {
@@ -44,7 +45,7 @@
 
         console.log("Joining queue")
         
-        interval = await API.joinCallQueue(filters, async (targetId) => {
+        interval = await API.joinCallQueue($filterStore, async (targetId) => {
             console.log("Found one!")
             let target = await API.getUser(targetId);
             targetData.set(target);
@@ -56,6 +57,7 @@
             startMatching();
         } else if (step !== 4 && interval) {
             clearInterval(interval);
+            interval = null;
         }
     }
 </script>
@@ -86,8 +88,7 @@
             </button>
         </div>
     </main>
-    {/if}
-    {#if step === 2}
+    {:else if step === 2}
     <main class="step step2" in:fly={{x: 200, duration: 200}} out:fly={{x: -200, duration: 200}}>
         <h1>What do you want to do?</h1>
         <div class="options">
@@ -114,18 +115,24 @@
             </button>
         </div>
     </main>
-    {/if}
-    {#if step === 2.2}
-    <main class="step hotlines">
+    {:else if step === 2.2}
+    <main class="step hotlines" in:fly={{x: 200, duration: 200}} out:fly={{x: -200, duration: 200}}>
         <Hotlines />
     </main>
     {/if}
     {#if step === 2.4}
-    <main class="step filters">
-        <Filters />
+    <main class="step filters" in:fly={{x: 200, duration: 200}} out:fly={{x: -200, duration: 200}}>
+        <div class="options">
+        <Filters filterStore={filterStore} />
+        <button class="option" on:click={() => step = 3}>
+            <h2>Next</h2>
+            <span class="arrow">
+                <ChevronRight />
+            </span>
+        </button>
+    </div>
     </main>
-    {/if}
-    {#if step === 3}
+    {:else if step === 3}
     <main class="step step3" in:fly={{x: 200, duration: 200}} out:fly={{x: -200, duration: 200}}>
         <h1>Camera OK?</h1>
         <div class="options">
@@ -150,8 +157,7 @@
             </button>
         </div>
     </main>
-    {/if}
-    {#if step === 4}
+    {:else if step === 4}
     <main style:display={step !== 4 ? "none" : ""} class="step matching" in:fly={{x: 200, duration: 200}} out:fly={{x: -200, duration: 200}}>
         <MatchingAnim />
     </main>

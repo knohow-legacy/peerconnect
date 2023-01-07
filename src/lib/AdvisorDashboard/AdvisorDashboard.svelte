@@ -5,7 +5,6 @@
     import VideoCall from "../VideoCall/VideoCall.svelte";
     import CallScreen from "./CallScreen/CallScreen.svelte";
     import EditProfile from "./EditProfile/EditProfile.svelte";
-    import GoogleSignIn from "./GoogleSignIn.svelte";
     import Guidebook from "./Guidebook/Guidebook.svelte";
 
     let isInCall = false;
@@ -45,5 +44,6 @@
         gap: 10px;
         height: 100%;
         width: 100%;
+        background-color: #ddd;
     }
 </style>

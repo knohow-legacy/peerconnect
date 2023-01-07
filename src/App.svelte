@@ -5,6 +5,7 @@
     import { view, userData, targetData } from './GlobalStore';
     import AdvisorDashboard from './lib/AdvisorDashboard/AdvisorDashboard.svelte';
     import API from './API';
+    import { fly } from 'svelte/transition';
     let myId, theirId;
     let defaults = {video: true, audio: true}
 
@@ -27,8 +28,33 @@
         let apiData = await API.login(data.sub, data.name, data.picture, data.email)
         userData.set(apiData);
     }
+    let signInRef;
+
+    function rerenderButton() {
+        // The button needs to be rerendered when it is shown
+        setTimeout(() => 
+        // @ts-ignore
+            window.google.accounts.id.renderButton(signInRef, {
+                theme: 'white',
+                size: 'large',
+                type: 'standard',
+                text: 'continue_with',
+            })
+        , 0)
+    }
+
+    $: {
+        if ($view === 'advisor' && (!$userData || !$userData.isAdvisor)) {
+            rerenderButton()
+
+        }
+    }
 
 </script>
+
+<svelte:head>
+    <script src="https://accounts.google.com/gsi/client" async defer />
+</svelte:head>
 
 <Header />
 {#if $view === 'client'}
@@ -38,38 +64,44 @@
     <VideoCall
         userData={$userData}
         targetData={$targetData}
-        onHangup={() => targetData.set(null)}
+        onHangup={() => { targetData.set(null)}}
         defaults={defaults}
     />
     {/if}
-{:else if $view === 'advisor'}
-    {#if $userData}
+{:else if ($view === 'advisor' && $userData && $userData.isAdvisor)}
     <AdvisorDashboard />
-    {:else}
-    <p>Login to Google to continue.</p>
-    {/if}
+{:else if $view === 'advisor'}
+<div class="googleSignIn" in:fly={{x: 200, duration: 200}} out:fly={{x: -200, duration: 200}}>
+    <p>Sign in with Google to continue.</p>
+    <div class="g_id_signin" 
+        data-type="standard"
+        data-size="large"
+        data-theme="outline"
+        data-text="sign_in_with"
+        data-shape="rectangular"
+        data-logo_alignment="left"
+        bind:this={signInRef}
+    />
+</div>
 {/if}
-<svelte:head>
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-</svelte:head>
 
 <div id="g_id_onload"
     data-client_id="869385602749-9elqfom3fsdr71en2iovlrcjkcv9l5of.apps.googleusercontent.com"
     data-callback="handleCredentialResponse" />
 
-{#if !$userData || !$userData.isAdvisor}
-<div class="g_id_signin"
-    style:display={$view === 'advisor' && (!$userData || !$userData.isAdvisor) ? 'block' : 'none'}
-    data-type="standard"
-    data-size="large"
-    data-theme="outline"
-    data-text="sign_in_with"
-    data-shape="rectangular"
-    data-logo_alignment="left" />
-{/if}
-
 <style>
     .g_id_signin {
         margin: 0 auto;
+    }
+    .googleSignIn {
+        height: calc(100% - 50px);
+        width: 100%;
+        margin: auto;
+        top: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        position: absolute;
     }
 </style>

@@ -1,9 +1,9 @@
 import axios from "axios";
 import { get } from "svelte/store";
 import { userData } from "./GlobalStore";
-
-export const ENDPOINT = 'http://localhost:3000/api';
-export const WS_ENDPOINT = 'ws://localhost:6503';
+// peerconnect-backend.azurewebsites.net
+export const ENDPOINT = 'https://peerconnect-backend.azurewebsites.net/api';
+export const WS_ENDPOINT = 'wss://peerconnect-backend.azurewebsites.net';
 
 class APIBase {
     constructor() {
@@ -84,7 +84,7 @@ class APIBase {
 
         let data = await this.POST(`${ENDPOINT}/ping-queue`, {id: user.id}).catch(() => null);
         
-        if (!data) return null;
+        if (!data) return false;
 
         if (data.hasBeenChosen) {
             return data.hasBeenChosenBy;
@@ -99,13 +99,15 @@ class APIBase {
         let user = get(userData);
         if (!user) return null;
 
-        let resp = await this.POST(`${ENDPOINT}/join-queue`, {attributes: filters, id: user.id});
+        await this.POST(`${ENDPOINT}/join-queue`, {attributes: filters, id: user.id});
 
         let interval = setInterval(async () => {
-            console.log("interval ran")
             let target = await this.checkCallQueue();
 
-            if (target) {
+            if (target === false) {
+                // if request failed, rejoin queue
+                await this.POST(`${ENDPOINT}/join-queue`, {attributes: filters, id: user.id});
+            } else if (target) {
                 clearInterval(interval);
                 onMatch(target);
             }

@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onMount, onDestroy } from "svelte";
     import adapter from 'webrtc-adapter';
+    import { WS_ENDPOINT } from "../../API";
     import CallingAnim from "../../assets/CallingAnim.svelte";
 
     const HOSTNAME = window.location.hostname;
@@ -42,6 +43,11 @@
 
     onMount(() => {
         connect();
+        setTimeout(() => {
+          if (!myPeerConnection) {
+            closeVideoCall();
+          }
+        }, 30000)
     })
 
     onDestroy(() => {
@@ -56,18 +62,8 @@
 // Open and configure the connection to the WebSocket server.
 
 function connect() {
-  var serverUrl;
-  var scheme = "ws";
 
-  // If this is an HTTPS connection, we have to use a secure WebSocket
-  // connection too, so add another "s" to the scheme.
-
-  if (document.location.protocol === "https:") {
-    scheme += "s";
-  }
-  serverUrl = scheme + `://${HOSTNAME}:6503`;
-
-  connection = new WebSocket(serverUrl, "json");
+  connection = new WebSocket(WS_ENDPOINT, "json");
 
   connection.onopen = function(evt) {
     canHangup = true;
@@ -91,7 +87,7 @@ function connect() {
       case "username":
         break;
       case "message":
-        text.text = `${msg.name === userData.id ? userData.name || "You" : targetData.name || "Them"}: ${msg.text}`;
+        text.text = `${msg.name === userData.id ? userData.name.includes("default-name-") ? "You" : userData.name : targetData.name || "Them"}: ${msg.text}`;
         break;
 
       case "rejectusername":
@@ -597,7 +593,7 @@ async function handleNewICECandidateMsg(msg) {
 <main class="videoCall">
     <div class="myWindow">
         <span class="videoDisabled">Video Disabled</span>
-        {#if userData.name}
+        {#if !userData.name.includes("default-name-")}
         <span>{userData.name}</span>
         {/if}
         <video bind:this={myVideo} autoplay muted />
@@ -720,6 +716,7 @@ async function handleNewICECandidateMsg(msg) {
         position: absolute;
         top: 50%;
         left: 50%;
+        color: white;
         transform: translate(-50%, -50%);
     }
     .videoCall video {
