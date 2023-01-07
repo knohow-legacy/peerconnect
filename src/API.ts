@@ -98,6 +98,12 @@ class APIBase {
         );
     }
 
+    async getUserByToken(token: string) {
+        return await this.GET(
+            `${ENDPOINT}/fetch-user-by-token/${token}`
+        );
+    }
+
     private async checkCallQueue() {
         let user = get(userData);
         if (!user) return null;
@@ -185,6 +191,24 @@ class APIBase {
         return await this.PATCH(`${ENDPOINT}/patch-attributes`, {attributes}, {
             'Authorization': `Bearer ${user.token}`
         });
+    }
+
+    async deleteAccount() {
+        let user = get(userData);
+        if (!user || !user.token) return;
+
+        let headers = { 'Accept': 'application/json', 'Authorization': `Bearer ${user.token}` }
+        let resp = await axios.patch(
+            `${ENDPOINT}/delete-user`, 
+            null,
+            { headers }
+        );
+
+        if (resp.status !== 200) {
+            throw new Error(resp.data.error);
+        }
+
+        return resp.data;
     }
 }
 

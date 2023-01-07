@@ -19,7 +19,7 @@
     <p>CA Youth Crisis Hotline: <a href="tel:8008435200">1-800-843-5200</a></p>
     <p>For imminent danger, call 911</p>
     <h3>About PeerConnect</h3>
-    <p>PeerConnect was created by Hershraj Niranjani and Alexander Sherbrooke for the Hackathon By The Sea 2023.</p>
+    <p>PeerConnect was created by Hershraj Niranjani and Alexander Sherbrooke for the Hackathon By The Sea 2023. You can view the <a rel="noreferrer" target="_blank" href="https://github.com/knohow/peerconnect">source code here</a>.</p>
     <p>Please remember to use this platform in good faith and to be respectful to everyone! With your help, PeerConnect can remain a friendly and inviting platform for all to enjoy.</p>
     <p></p>
 </aside>

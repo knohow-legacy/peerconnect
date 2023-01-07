@@ -44,7 +44,7 @@
     .advisorDashboard {
         display: flex;
         flex-direction: row;
-        gap: 10px;
+        gap: max(10px, 5vw);
         height: 100%;
         flex-shrink: 1;
         width: 100%;

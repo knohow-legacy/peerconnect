@@ -1,11 +1,11 @@
 <script>
     import HumanGreetingProximity from "svelte-material-icons/HumanGreetingProximity.svelte";
-    import { view } from "../../GlobalStore";
+    import { targetData, view } from "../../GlobalStore";
 
 </script>
 
 <header>
-    <h2 on:click={() => view.set("client")}>
+    <h2 on:click={() => { if (!$targetData) view.set("client")} }>
         <span>
             <HumanGreetingProximity />
         </span>

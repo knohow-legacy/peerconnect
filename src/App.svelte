@@ -29,6 +29,7 @@
 
         let apiData = await API.login(data.sub, data.name, data.picture, data.email)
         userData.set(apiData);
+        localStorage.setItem("peerconnect-token", apiData.token)
     }
     let signInRef;
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { userData } from "../../../GlobalStore";
+    import { userData, view } from "../../../GlobalStore";
     import Filters from "../../Filters/Filters.svelte";
     import { writable } from "svelte/store";
     import { onDestroy } from "svelte";
@@ -18,15 +18,39 @@
     onDestroy(() => {
         unsubscribe();
     })
+
+    function logOut() {
+        userData.set(null);
+        localStorage.removeItem("peerconnect-token");
+        view.set("client");
+    }
+
+    function deleteAccount() {
+        if (confirm("Are you sure you want to delete your Advisor account? This action cannot be undone.")) {
+            API.deleteAccount();
+            logOut();
+        }
+    }
 </script>
 
 <aside class="editProfile">
     <h2>Edit your profile</h2>
     <div class="userInfo">
         <img src={$userData.pfp} alt="Profile" />
-        <input type="text" value={$userData.name} disabled maxlength="32" />
+        <div class="userData">
+            <input type="text" value={$userData.name} disabled maxlength="32" />
+            <div class="userActions">
+                <button on:click={logOut}>
+                    Log out
+                </button>
+                <button style="background-color: var(--danger); color: white" on:click={deleteAccount}>
+                    Delete account
+                </button>
+            </div>
+        </div>
     </div>
 
+    <h2>Help people find you</h2>
     <Filters filterStore={userAttributesStore} isAdvisor={true} />
     <div style="height: 2em" />
 </aside>
@@ -49,6 +73,19 @@
         padding: 10px;
         border-radius: 10px;
     }
+    .userInfo .userData {
+        display: flex;
+        flex-direction: column;
+        align-items: left;
+        gap: 10px;
+        flex: 1;
+        width: 100%;
+    }
+    .userActions {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
     .userInfo input {
         background-color: #ccc;
         border: 2px solid #777;
@@ -58,6 +95,6 @@
         padding: 10px;
         font-size: 1em;
         flex: 1;
-        width: 100%;
+        width: calc(100% - 24px);
     }
 </style>
