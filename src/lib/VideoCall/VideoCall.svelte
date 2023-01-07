@@ -723,12 +723,12 @@
 
     @media screen and (max-width: 1000px) {
       .myWindow {
-        position: fixed;
+        position: fixed !important;
         filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
         top: 10px;
         right: 10px;
-        width: max(20vw, 20vh);
-        height: calc(max(20vw, 20vh) * calc(16 / 9));
+        width: max(20vw, 20vh) !important;
+        height: calc(max(20vw, 20vh) * calc(16 / 9)) !important;
         z-index: 5;
       }
       .theirWindow {
