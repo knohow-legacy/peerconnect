@@ -17,6 +17,9 @@
   --primary-light: #5ddef4;
   --primary: #00acc1;
   --primary-dark: #007c91;
+
+  --success: #64dd17;
+  --danger: #dd2c00;
 }
 
 a {
@@ -34,6 +37,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  overflow: hidden;
 }
 
 h1 {
@@ -48,6 +52,8 @@ h1 {
 #app {
   margin: 0 auto;
   text-align: center;
+  display: flex;
+  flex-direction: column;
 }
 html, body, #app {
   width: 100%;
@@ -72,4 +78,9 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* cross component styles */
+.steps .backBtn svg {
+  font-size: 2em;
 }

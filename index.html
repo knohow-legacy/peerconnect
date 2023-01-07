@@ -4,9 +4,17 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Video Call Demo</title>
+    <meta name="google-signin-client_id" content="869385602749-9elqfom3fsdr71en2iovlrcjkcv9l5of.apps.googleusercontent.com">
+    <title>PeerConnect - find someone to talk to</title>
   </head>
   <body>
+    <div id="g_id_onload"
+      data-client_id="869385602749-9elqfom3fsdr71en2iovlrcjkcv9l5of.apps.googleusercontent.com"
+      data-context="signin"
+      data-ux_mode="popup"
+      data-callback="handleCredentialResponse"
+      data-auto_prompt="false">
+    </div>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
   </body>
