@@ -24,7 +24,7 @@
     let canHangup = false;
     let videoEnabled = defaults.video;
     let audioEnabled = defaults.audio;
-    let clientID;
+    let peerID;
     let connection;
     let myUsername = userData.id;
     let targetUsername = targetData.id;      // To store username of other peer
@@ -44,7 +44,7 @@
         sendToServer({
             name: userData.id,
             date: Date.now(),
-            id: clientID,
+            id: peerID,
             type: "username"
         });
     }
@@ -89,7 +89,7 @@
 
         switch(msg.type) {
         case "id":
-            clientID = msg.id;
+            peerID = msg.id;
             setUsername();
             break;
 
@@ -151,7 +151,7 @@
     var msg = {
         text: message,
         type: "message",
-        id: clientID,
+        id: peerID,
         date: Date.now()
     };
     sendToServer(msg);

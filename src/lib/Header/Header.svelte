@@ -5,7 +5,7 @@
 </script>
 
 <header>
-    <h2 on:click={() => { if (!$targetData) view.set("client")} }>
+    <h2 on:click={() => { if (!$targetData) view.set("peer")} }>
         <span>
             <HumanGreetingProximity />
         </span>

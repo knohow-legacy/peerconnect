@@ -20,8 +20,8 @@
     let interval;
     let filterStore = writable([]);
 
-    function step1(isClient: boolean) {
-        if (!isClient) {
+    function step1(isPe: boolean) {
+        if (!isPe) {
             // is tutor
         }
         step = 2;
@@ -34,7 +34,7 @@
     }
 
     async function startMatching() {
-        let user = await API.clientLogin();
+        let user = await API.peerLogin();
         userData.set(user);
         
         interval = await API.joinCallQueue($filterStore, async (targetId) => {

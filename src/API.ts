@@ -80,10 +80,10 @@ class APIBase {
     }
 
     /**
-     * Creates a temporary client user.
-     * @returns the client object.
+     * Creates a temporary peer user.
+     * @returns the peer object.
      */
-    async clientLogin() {
+    async peerLogin() {
         return await this.POST(
             `${ENDPOINT}/sign-in`
         );
@@ -118,7 +118,7 @@ class APIBase {
     }
 
     /**
-     * [CLIENT] Joins the call queue.
+     * [PEER] Joins the call queue.
      * @returns Cancel function, or null if failed
      */
     async joinCallQueue(filters: any|null, onMatch: (targetID: string) => void) {
@@ -146,7 +146,7 @@ class APIBase {
     }
 
     /**
-     * [CLIENT] Leaves the call queue.
+     * [PEER] Leaves the call queue.
      */
     async leaveCallQueue() {
         let user = get(userData);
@@ -157,10 +157,10 @@ class APIBase {
 
     /* ADVISOR */
     /**
-     * [ADVISOR] Fetches a list of potential clients.
-     * @returns a list of potential clients.
+     * [ADVISOR] Fetches a list of potential peers.
+     * @returns a list of potential peers.
      */
-    async fetchClientList() {
+    async fetchPeerList() {
         let user = get(userData);
         if (!user || !user.token) return [];
 
@@ -170,7 +170,7 @@ class APIBase {
     }
 
     /**
-     * [ADVISOR] Accepts the client with the given ID.
+     * [ADVISOR] Accepts the peer with the given ID.
      */
     async acceptCall(id: string) {
         let user = get(userData);

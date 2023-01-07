@@ -22,7 +22,7 @@
     function logOut() {
         userData.set(null);
         localStorage.removeItem("peerconnect-token");
-        view.set("client");
+        view.set("peer");
     }
 
     function deleteAccount() {

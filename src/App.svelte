@@ -1,6 +1,6 @@
 <script lang="ts">
     import { fly } from 'svelte/transition';
-    import ClientSteps from './lib/ClientSteps/ClientSteps.svelte';
+    import PeerSteps from './lib/PeerSteps/PeerSteps.svelte';
     import Header from './lib/Header/Header.svelte';
     import VideoCall from './lib/VideoCall/VideoCall.svelte';
     import { view, userData, targetData } from './GlobalStore';
@@ -56,16 +56,16 @@
 </script>
 
 <svelte:head>
-    <script src="https://accounts.google.com/gsi/client" async defer />
+    <script src="https://accounts.google.com/gsi/peer" async defer />
 </svelte:head>
 
 <Header />
 {#if postCallUser}
     <PostCall user={postCallUser} onRating={() => postCallUser = null} />
 {/if}
-{#if $view === 'client'}
+{#if $view === 'peer'}
     {#if !$targetData}
-    <ClientSteps />
+    <PeerSteps />
     {:else}
     <VideoCall
         userData={$userData}
