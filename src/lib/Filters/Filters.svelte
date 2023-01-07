@@ -40,11 +40,13 @@
             displayName: "Interests and Expertise",
             multiselect: true,
             options: [
-                "Sports",
-                "Music",
-                "Drama",
-                "Career",
-                "College"
+                "🏈 Sports",
+                "🎵 Music",
+                "🎭 Drama",
+                "💻 Tech",
+                "🎨 Art",
+                "💼 Career",
+                "🎓 College Prep"
             ]
         },
         {
@@ -52,34 +54,34 @@
             displayName: "Academics",
             multiselect: true,
             options: [
-                "Math",
-                "Science",
-                "English",
-                "History"
+                "➗ Math",
+                "🧪 Science",
+                "📚 English",
+                "📜 History"
             ]
         },
     ]
 
     export let filterStore = writable([]);
+    export let isMentor = false;
 </script>
-
 
 <div>
     <h3>Select all that apply</h3>
     {#each filters as filter}
         {#if filter.displayName}
-        <h4>{filter.displayName}</h4>
+        <h4>{filter.displayName} {isMentor && !filter.multiselect ? "(select one)" : ""}</h4>
         {/if}
         <div class="filterList">
         {#each filter.options as option}
-            <Filter category={filter.name} name={option} filterStore={filterStore} />
+            <Filter multiselect={isMentor ? filter.multiselect : true} category={filter.name} name={option} filterStore={filterStore} />
         {/each}
         </div>
     {/each}
 </div>
-
 <style>
     .filterList {
+        flex-grow: 1;
         display: flex;
         flex-wrap: wrap;
         gap: 10px;

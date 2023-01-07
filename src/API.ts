@@ -2,8 +2,12 @@ import axios from "axios";
 import { get } from "svelte/store";
 import { userData } from "./GlobalStore";
 // peerconnect-backend.azurewebsites.net
-export const ENDPOINT = 'https://peerconnect-backend.azurewebsites.net/api';
-export const WS_ENDPOINT = 'wss://peerconnect-backend.azurewebsites.net';
+export const ENDPOINT = import.meta.env.DEV ? 
+    'http://localhost:8080/api' :
+    'https://peerconnect-backend.azurewebsites.net/api';
+export const WS_ENDPOINT = import.meta.env.DEV ? 
+    'ws://localhost:8080' :
+    'wss://peerconnect-backend.azurewebsites.net';
 
 class APIBase {
     constructor() {
@@ -12,6 +16,21 @@ class APIBase {
     private async POST(url: string, data: any = null, additionalHeaders: any = {}) {
         let headers = { 'Accept': 'application/json', ...additionalHeaders }
         let resp = await axios.post(
+            url, 
+            data,
+            { headers }
+        );
+
+        if (resp.status !== 200) {
+            throw new Error(resp.data.error);
+        }
+
+        return resp.data;
+    }
+
+    private async PATCH(url: string, data: any = null, additionalHeaders: any = {}) {
+        let headers = { 'Accept': 'application/json', ...additionalHeaders }
+        let resp = await axios.patch(
             url, 
             data,
             { headers }
@@ -119,6 +138,16 @@ class APIBase {
         return interval;
     }
 
+    /**
+     * [CLIENT] Leaves the call queue.
+     */
+    async leaveCallQueue() {
+        let user = get(userData);
+        if (!user) return;
+
+        await this.POST(`${ENDPOINT}/leave-queue`, {id: user.id});
+    }
+
     /* MENTOR */
     /**
      * [MENTOR] Fetches a list of potential clients.
@@ -141,6 +170,18 @@ class APIBase {
         if (!user || !user.token) return;
 
         return await this.POST(`${ENDPOINT}/accept-user`, {id}, {
+            'Authorization': `Bearer ${user.token}`
+        });
+    }
+
+    /**
+     * [MENTOR] Updates the attributes of the mentor.
+     */
+    async updateAttributes(attributes: {name: string, category: string}[]) {
+        let user = get(userData);
+        if (!user || !user.token) return;
+
+        return await this.PATCH(`${ENDPOINT}/patch-attributes`, {attributes}, {
             'Authorization': `Bearer ${user.token}`
         });
     }

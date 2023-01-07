@@ -4,3 +4,5 @@ export let userData = writable(null);
 export let targetData = writable(null);
 export let view = writable<"client"|"advisor"|"home">("client");
 export let dismissedClientIds = writable([]);
+export let sendChat = writable((text: string) => {});
+export let chatMsgsStore = writable([]);

@@ -1,15 +1,16 @@
 <script lang="ts">
+    import { writable } from "svelte/store";
     import API from "../../API";
     import App from "../../App.svelte";
     import { targetData, userData } from "../../GlobalStore";
     import VideoCall from "../VideoCall/VideoCall.svelte";
     import CallScreen from "./CallScreen/CallScreen.svelte";
+    import Chat from "./Chat/Chat.svelte";
     import EditProfile from "./EditProfile/EditProfile.svelte";
     import Guidebook from "./Guidebook/Guidebook.svelte";
 
     let isInCall = false;
-    let videoEnabled = true;
-    let audioEnabled = true;
+    let callDefaultsStore = writable({video: true, audio: true});
 
     async function onCalling(targetId: string) {
         await API.acceptCall(targetId);
@@ -19,16 +20,18 @@
 </script>
 {#if $userData}
 <main class="advisorDashboard">
-    <EditProfile />
     {#if isInCall}
-    <VideoCall 
+    <Chat />
+    <VideoCall
         userData={$userData}
         targetData={$targetData}
+        forceMiniPlayer={true}
         onHangup={() => {isInCall = false; targetData.set(null)}}
-        defaults={{video: videoEnabled, audio: audioEnabled}}
+        defaults={$callDefaultsStore}
     />
     {:else}
-    <CallScreen onCalling={onCalling} />
+    <EditProfile />
+    <CallScreen onCalling={onCalling} callDefaultsStore={callDefaultsStore} />
     {/if}
     <Guidebook />
 </main>
@@ -43,6 +46,7 @@
         flex-direction: row;
         gap: 10px;
         height: 100%;
+        flex-shrink: 1;
         width: 100%;
         background-color: #ddd;
     }

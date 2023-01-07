@@ -48,6 +48,7 @@
         position: relative;
         width: 100%;
         height: 100%;
+        z-index: -1;
     }
     .matchingAnim h1 {
         position: absolute;
@@ -65,7 +66,7 @@
     }
     .matchingAnim .takingAWhile {
         position: absolute;
-        top: calc(30% + 70px);
+        top: calc(30% + 120px);
         margin: 10px;
         width: calc(100% - 40px);
         font-size: 20px;

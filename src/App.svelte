@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Steps from './lib/ClientSteps/ClientSteps.svelte';
+    import ClientSteps from './lib/ClientSteps/ClientSteps.svelte';
     import Header from './lib/Header/Header.svelte';
     import VideoCall from './lib/VideoCall/VideoCall.svelte';
     import { view, userData, targetData } from './GlobalStore';
@@ -59,7 +59,7 @@
 <Header />
 {#if $view === 'client'}
     {#if !$targetData}
-    <Steps />
+    <ClientSteps />
     {:else}
     <VideoCall
         userData={$userData}

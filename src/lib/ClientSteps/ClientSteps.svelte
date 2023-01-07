@@ -24,15 +24,6 @@
         step = 2;
     }
 
-    function step2(needToTalk: boolean) {
-        if (needToTalk) {
-            // client needs to talk
-        } else {
-            // client wants advice; allow more tutors
-        }
-        step = 3;
-    }
-
     function step3(isCameraOK: boolean) {
         cameraOK = isCameraOK;
         step = 4;
@@ -42,8 +33,6 @@
     async function startMatching() {
         let user = await API.clientLogin();
         userData.set(user);
-
-        console.log("Joining queue")
         
         interval = await API.joinCallQueue($filterStore, async (targetId) => {
             console.log("Found one!")
@@ -58,18 +47,19 @@
         } else if (step !== 4 && interval) {
             clearInterval(interval);
             interval = null;
+            API.leaveCallQueue();
         }
     }
 </script>
 <div class="steps">
     {#if step !== 1}
-    <button on:click={() => { step = Math.ceil(step - 1)} } transition:fly={{x: 200, duration: 200}} class="backBtn">
+    <button on:click={() => { step = Math.ceil(step - 1)} } transition:fly|local={{x: 200, duration: 200}} class="backBtn">
         <ChevronLeft />
         BACK
     </button>
     {/if}
     {#if step === 1}
-    <main class="step step1" in:fly={{x: 200, duration: 200}} out:fly={{x: -200, duration: 200}}>
+    <main class="step step1">
         <h1>Welcome!</h1>
         <div class="options">
             <button class="option" on:click={() => step1(true)}>
@@ -89,10 +79,10 @@
         </div>
     </main>
     {:else if step === 2}
-    <main class="step step2" in:fly={{x: 200, duration: 200}} out:fly={{x: -200, duration: 200}}>
+    <main class="step step2" in:fly|local={{x: 200, duration: 200}} out:fly|local={{x: -200, duration: 200}}>
         <h1>What do you want to do?</h1>
         <div class="options">
-            <button class="option" on:click={() => step2(true)}>
+            <button class="option" on:click={() => { filterStore.set([{name: "Here to talk", category: "general"}]); step = 3}}>
                 <h2>I want to talk to somebody.</h2>
                 <p>You'll be matched with someone who's ready to listen.</p>
                 <span class="arrow">
@@ -116,12 +106,12 @@
         </div>
     </main>
     {:else if step === 2.2}
-    <main class="step hotlines" in:fly={{x: 200, duration: 200}} out:fly={{x: -200, duration: 200}}>
+    <main class="step hotlines" in:fly|local={{x: 200, duration: 200}} out:fly|local={{x: -200, duration: 200}}>
         <Hotlines />
     </main>
     {/if}
     {#if step === 2.4}
-    <main class="step filters" in:fly={{x: 200, duration: 200}} out:fly={{x: -200, duration: 200}}>
+    <main class="step filters" in:fly|local={{x: 200, duration: 200}} out:fly|local={{x: -200, duration: 200}}>
         <div class="options">
         <Filters filterStore={filterStore} />
         <button class="option" on:click={() => step = 3}>
@@ -133,7 +123,7 @@
     </div>
     </main>
     {:else if step === 3}
-    <main class="step step3" in:fly={{x: 200, duration: 200}} out:fly={{x: -200, duration: 200}}>
+    <main class="step step3" in:fly|local={{x: 200, duration: 200}} out:fly|local={{x: -200, duration: 200}}>
         <h1>Camera OK?</h1>
         <div class="options">
             <button class="option" on:click={() => step3(true)}>
@@ -158,7 +148,7 @@
         </div>
     </main>
     {:else if step === 4}
-    <main style:display={step !== 4 ? "none" : ""} class="step matching" in:fly={{x: 200, duration: 200}} out:fly={{x: -200, duration: 200}}>
+    <main style:display={step !== 4 ? "none" : ""} class="step matching" in:fly|local={{x: 200, duration: 200}} out:fly|local={{x: -200, duration: 200}}>
         <MatchingAnim />
     </main>
     {/if}

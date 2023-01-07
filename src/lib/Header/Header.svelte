@@ -1,6 +1,11 @@
+<script>
+
+    import { view } from "../../GlobalStore";
+
+</script>
 
 <header>
-    <h2>PeerConnect</h2>
+    <h2 on:click={() => view.set("client")}>PeerConnect</h2>
 </header>
 
 <style>
@@ -12,5 +17,7 @@
     header h2 {
         margin: 0;
         line-height: 50px;
+        cursor: pointer;
+        user-select: none;
     }
 </style>
