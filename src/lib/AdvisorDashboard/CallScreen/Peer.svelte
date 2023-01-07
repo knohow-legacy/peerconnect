@@ -24,7 +24,7 @@
                 {#if peer.similarityMax === 0}
                 Unsure of match
                 {:else}
-                {Math.round(peer.similarity / peer.similarityMax * 100)}% match ({peer.similarity}/{peer.similarityMax} traits in common)
+                {Math.round(peer.similarity / peer.attributes.length * 100)}% match ({peer.similarity}/{peer.attributes.length} traits in common)
                 {/if}
             </span>
         </h3>
@@ -78,20 +78,6 @@
     .peer h3 span {
         font-size: 0.8em;
         color: #ccc;
-    }
-    .peer .attributes {
-        flex-grow: 1;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        background-color: #222;
-        padding: 10px;
-        border-radius: 5px;
-    }
-    .peer .attribute {
-        background-color: #333;
-        padding: 5px 10px;
-        border-radius: 5px;
     }
     .attribute.shared {
         color: orange;

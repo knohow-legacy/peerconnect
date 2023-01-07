@@ -1,5 +1,6 @@
 <script lang="ts">
-    import { fly } from 'svelte/transition';
+    import { fly, fade, scale } from 'svelte/transition';
+    import { quintInOut } from 'svelte/easing';
     import ChevronRight from "svelte-material-icons/ChevronRight.svelte";
     import ChevronLeft from "svelte-material-icons/ChevronLeft.svelte";
     import HumanGreetingVariant from "svelte-material-icons/HumanGreetingVariant.svelte";
@@ -7,6 +8,7 @@
     import Alert from "svelte-material-icons/Alert.svelte";
     import Video from "svelte-material-icons/Video.svelte";
     import VideoOff from "svelte-material-icons/VideoOff.svelte";
+    import Phone from "svelte-material-icons/Phone.svelte";
     import MatchingAnim from '../../assets/MatchingAnim.svelte';
     import Hotlines from '../../assets/Hotlines.svelte';
     import { targetData, userData, view } from '../../GlobalStore';
@@ -14,21 +16,21 @@
     import Filters from '../Filters/Filters.svelte';
     import { writable } from 'svelte/store';
     let step = 1;
-
-    let cameraOK = false;
+    export let defaults;
     let startedMatching = Date.now();
     let interval;
     let filterStore = writable([]);
+    let target = null;
 
-    function step1(isPe: boolean) {
-        if (!isPe) {
+    function step1(isPeer: boolean) {
+        if (!isPeer) {
             // is tutor
         }
         step = 2;
     }
 
     function step3(isCameraOK: boolean) {
-        cameraOK = isCameraOK;
+        defaults.update((value) => { return {...value, video: isCameraOK} })
         step = 4;
         startedMatching = Date.now();
     }
@@ -38,9 +40,12 @@
         userData.set(user);
         
         interval = await API.joinCallQueue($filterStore, async (targetId) => {
-            console.log("Found one!")
-            let target = await API.getUser(targetId);
-            targetData.set(target);
+            target = await API.getUser(targetId);
+            step += 1;
+            clearInterval(interval);
+            setTimeout(() => {
+                step = 3;
+            }, 45000);
         })
     }
 
@@ -96,7 +101,7 @@
                     <ChevronRight />
                 </span>
             </button>
-            <button class="option" on:click={() => { step = 2.4 }}>
+            <button class="option" on:click={() => { filterStore.set([]); step = 2.4 }}>
                 <span class="icon">
                     <AccountQuestion />
                 </span>
@@ -165,6 +170,28 @@
     <main style:display={step !== 4 ? "none" : ""} class="step matching" in:fly|local={{x: 200, duration: 200}} out:fly|local={{x: -200, duration: 200}}>
         <MatchingAnim />
     </main>
+    {/if}
+    {#if target}
+    <div class="modal" transition:fade|local={{duration: 200}}>
+        <div class="modalInner" transition:scale|local={{duration: 200, easing: quintInOut}}>
+            <h2>You've been paired with</h2>
+            <div class="user">
+                <img src={target.pfp} alt={target.name} />
+                <h1 style="margin: 0">{target.name}</h1>
+            </div>
+            <h3 style="margin: 0">About {target.name}</h3>
+            <div class="attributes" style="background-color: transparent">
+                {#each target.attributes as attribute}
+                <div class="attribute" style="color: black; background-color: #ccc">
+                    {attribute.name}
+                </div>
+                {/each}
+            </div>
+            <button on:click={() => targetData.set(target)} class="callBtn" style="padding: 0.6em 1.8em; background-color: var(--success); color: white">
+                <Phone />
+            </button>
+        </div>
+    </div>
     {/if}
 </div>
 

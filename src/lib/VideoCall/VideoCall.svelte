@@ -55,7 +55,7 @@
           if (!myPeerConnection) {
             closeVideoCall();
           }
-        }, 30000)
+        }, 45000)
     })
 
     onDestroy(() => {

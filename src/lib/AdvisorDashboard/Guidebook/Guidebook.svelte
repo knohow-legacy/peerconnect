@@ -13,7 +13,8 @@
     <p>Once you are ready to connect, click the "Connect" button. You will be connected to your peer, and you can begin talking.</p>
     <p></p>
     <h3>Conduct</h3>
-    <p>As an Advisor, you represent your community and are responsible for giving help to those who need it. As such, you should always everyone with respect, regardless of the situation.</p>
+    <p>As an Advisor, you represent your community and are responsible for giving help to those who need it. As such, you should always treat everyone with respect, regardless of the situation. An Advisor's job is to make sure their Peer feels welcomed and accepted!</p>
+    <p>Peers can give feedback or report their Advisors after they end calls. Repeated misconduct may result in your Advisor account being banned, so don't do it!</p>
     <h3>Hotlines (just in case!)</h3>
     <p><a href="https://sites.google.com/mrpk.org/musd-wellness-center/home?pli=1">MUSD Wellness Center</a></p>
     <p>NAMI Ventura County <a href="tel:8055006264">805-500-6264</a></p>
@@ -23,7 +24,7 @@
     <p>For imminent danger, call 911</p>
     <h3>About PeerConnect</h3>
     <p>PeerConnect was created by Hershraj Niranjani and Alexander Sherbrooke for the Hackathon By The Sea 2023. You can view the <a rel="noreferrer" target="_blank" href="https://github.com/knohow/peerconnect">source code here</a>.</p>
-    <p>Please remember to use this platform in good faith and to be respectful to everyone! With your help, PeerConnect can remain a friendly and inviting platform for all to enjoy.</p>
+    <p>Happy helping!</p>
     <p></p>
 </aside>
 

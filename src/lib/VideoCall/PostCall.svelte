@@ -36,27 +36,6 @@
 </div>
 
 <style>
-    .modal {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 50;
-    }
-    .modalInner {
-        background-color: white;
-        padding: 20px;
-        border-radius: 10px;
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        align-items: center;
-    }
     .callReactions {
         display: flex;
         flex-direction: row;
@@ -88,16 +67,5 @@
     .reportBtn span {
         line-height: 0;
         font-size: 24px;
-    }
-    .user {
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 10px;
-    }
-    .user img {
-        width: 50px;
-        height: 50px;
-        border-radius: 100%;
     }
 </style>

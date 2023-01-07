@@ -7,8 +7,9 @@
     import AdvisorDashboard from './lib/AdvisorDashboard/AdvisorDashboard.svelte';
     import API from './API';
     import PostCall from './lib/VideoCall/PostCall.svelte';
+    import { writable } from 'svelte/store';
     let myId, theirId;
-    let defaults = {video: true, audio: true}
+    let defaults = writable({video: true, audio: true})
     let postCallUser = null;
 
     // google sign in
@@ -65,13 +66,13 @@
 {/if}
 {#if $view === 'peer'}
     {#if !$targetData}
-    <PeerSteps />
+    <PeerSteps defaults={defaults} />
     {:else}
     <VideoCall
         userData={$userData}
         targetData={$targetData}
         onHangup={() => { postCallUser = {id: $targetData.id, name: $targetData.name, pfp: $targetData.pfp}; targetData.set(null)}}
-        defaults={defaults}
+        defaults={$defaults}
     />
     {/if}
 {:else if ($view === 'advisor' && $userData && $userData.isAdvisor)}
