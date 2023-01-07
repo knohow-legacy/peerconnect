@@ -5,8 +5,8 @@
 
     const HOSTNAME = window.location.hostname;
 
-    export let userData: {id: string};
-    export let targetData: {id: string};
+    export let userData: any;
+    export let targetData: any;
     export let defaults: {video: boolean, audio: boolean} = {video: true, audio: true};
     export let onHangup;
 
@@ -91,7 +91,7 @@ function connect() {
       case "username":
         break;
       case "message":
-        text.text = `${msg.name}: ${msg.text}`;
+        text.text = `${msg.name === userData.id ? userData.name || "You" : targetData.name || "Them"}: ${msg.text}`;
         break;
 
       case "rejectusername":
@@ -597,7 +597,9 @@ async function handleNewICECandidateMsg(msg) {
 <main class="videoCall">
     <div class="myWindow">
         <span class="videoDisabled">Video Disabled</span>
-        <span>{userData.id}</span>
+        {#if userData.name}
+        <span>{userData.name}</span>
+        {/if}
         <video bind:this={myVideo} autoplay muted />
     </div>
     <div class="theirWindow">
@@ -606,7 +608,9 @@ async function handleNewICECandidateMsg(msg) {
         {:else}
         <CallingAnim />
         {/if}
-        <span>{targetData.id}</span>
+        {#if targetData.name}
+        <span>{targetData.name}</span>
+        {/if}
         <video bind:this={theirVideo} autoplay />
         <div class="videoActions">
             <button on:click={() => videoEnabled = !videoEnabled}>
@@ -666,6 +670,7 @@ async function handleNewICECandidateMsg(msg) {
         display: flex;
         flex-direction: column;
         gap: 10px;
+        color: white;
     }
     .chat h2 {
         margin: 10px;
@@ -677,6 +682,7 @@ async function handleNewICECandidateMsg(msg) {
         flex-grow: 1;
         overflow-y: auto;
         overflow-wrap: break-word;
+        color: white;
     }
     .chatInputBox > input {
         flex-grow: 1;

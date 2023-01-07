@@ -36,8 +36,8 @@
     <Steps />
     {:else}
     <VideoCall
-        userData={{id: myId}}
-        targetData={{id: theirId}}
+        userData={$userData}
+        targetData={$targetData}
         onHangup={() => targetData.set(null)}
         defaults={defaults}
     />

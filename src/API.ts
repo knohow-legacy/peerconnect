@@ -3,7 +3,7 @@ import { get } from "svelte/store";
 import { userData } from "./GlobalStore";
 
 export const ENDPOINT = 'http://localhost:3000/api';
-export const WS_ENDPOINT = 'ws://localhost:6503/';
+export const WS_ENDPOINT = 'ws://localhost:6503';
 
 class APIBase {
     constructor() {
@@ -80,7 +80,7 @@ class APIBase {
 
     private async checkCallQueue() {
         let user = get(userData);
-        if (user) return null;
+        if (!user) return null;
 
         let data = await this.POST(`${ENDPOINT}/ping-queue`, {id: user.id}).catch(() => null);
         
@@ -97,25 +97,24 @@ class APIBase {
      */
     async joinCallQueue(filters: any|null, onMatch: (targetID: string) => void) {
         let user = get(userData);
-        if (user) return null;
+        if (!user) return null;
 
         let resp = await this.POST(`${ENDPOINT}/join-queue`, {attributes: filters, id: user.id});
 
-        if (resp.status !== 200) return null;
-
         let interval = setInterval(async () => {
+            console.log("interval ran")
             let target = await this.checkCallQueue();
 
             if (target) {
                 clearInterval(interval);
                 onMatch(target);
             }
-        }, 10000);
+        }, 5000);
 
         function cancel() {
             clearInterval(interval);
         }
-        return cancel;
+        return interval;
     }
 
     /* MENTOR */
@@ -128,6 +127,18 @@ class APIBase {
         if (!user || !user.token) return [];
 
         return await this.GET(`${ENDPOINT}/fetch-queue`, {
+            'Authorization': `Bearer ${user.token}`
+        });
+    }
+
+    /**
+     * [MENTOR] Accepts the client with the given ID.
+     */
+    async acceptCall(id: string) {
+        let user = get(userData);
+        if (!user || !user.token) return;
+
+        return await this.POST(`${ENDPOINT}/accept-user`, {id}, {
             'Authorization': `Bearer ${user.token}`
         });
     }

@@ -8,18 +8,13 @@
     import Hotlines from '../../assets/Hotlines.svelte';
     import { targetData, userData, view } from '../../GlobalStore';
     import API from '../../API';
+    import Filters from '../Filters/Filters.svelte';
     let step = 1;
 
     let cameraOK = false;
     let startedMatching = Date.now();
-    let checkInterval = null;
-    let filters = {
-        grade: [],
-        gender: [],
-        interests: [],
-        subjects: [],
-        schools: []
-    }
+    let filters = []
+    let interval;
 
     function step1(isClient: boolean) {
         if (!isClient) {
@@ -46,19 +41,21 @@
     async function startMatching() {
         let user = await API.clientLogin();
         userData.set(user);
+
+        console.log("Joining queue")
         
-        let targetId: string = await new Promise((resolve) => API.joinCallQueue(filters, resolve));
-
-        let target = await API.getUser(targetId);
-
-        targetData.set(target);
+        interval = await API.joinCallQueue(filters, async (targetId) => {
+            console.log("Found one!")
+            let target = await API.getUser(targetId);
+            targetData.set(target);
+        })
     }
 
     $: {
-        if (step === 4) {
+        if (step === 4 && !interval) {
             startMatching();
-        } else if (checkInterval) {
-            clearInterval(checkInterval);
+        } else if (step !== 4 && interval) {
+            clearInterval(interval);
         }
     }
 </script>
@@ -101,7 +98,7 @@
                     <ChevronRight />
                 </span>
             </button>
-            <button class="option" on:click={() => step2(false)}>
+            <button class="option" on:click={() => { step = 2.4 }}>
                 <h2>I need advice.</h2>
                 <p>Just want to ask a question? You'll be matched with someone knowledgable.</p>
                 <span class="arrow">
@@ -115,13 +112,17 @@
                     <ChevronRight />
                 </span>
             </button>
-            <div>or, sort by <a>advanced filters</a>.</div>
         </div>
     </main>
     {/if}
     {#if step === 2.2}
     <main class="step hotlines">
         <Hotlines />
+    </main>
+    {/if}
+    {#if step === 2.4}
+    <main class="step filters">
+        <Filters />
     </main>
     {/if}
     {#if step === 3}
