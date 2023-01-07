@@ -24,10 +24,11 @@
     <h2>Edit your profile</h2>
     <div class="userInfo">
         <img src={$userData.pfp} alt="Profile" />
-        <input type="text" value={$userData.name} maxlength="32" />
+        <input type="text" value={$userData.name} disabled maxlength="32" />
     </div>
 
     <Filters filterStore={userAttributesStore} isMentor={true} />
+    <div style="height: 2em" />
 </aside>
 
 <style>

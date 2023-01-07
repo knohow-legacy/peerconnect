@@ -25,6 +25,19 @@
             ]
         },
         {
+            name: "school",
+            displayName: "School",
+            multiselect: false,
+            options: [
+                "Moorpark HS",
+                "The HS at Moorpark College",
+                "Newbury Park HS",
+                "Simi Valley HS",
+                "Westlake HS",
+                "Thousand Oaks HS"
+            ]
+        },
+        {
             name: "gender",
             displayName: "Gender",
             multiselect: false,
@@ -57,7 +70,9 @@
                 "➗ Math",
                 "🧪 Science",
                 "📚 English",
-                "📜 History"
+                "📔 Foreign Language",
+                "📜 History",
+                "❓ Other Subject"
             ]
         },
     ]

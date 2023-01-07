@@ -2,6 +2,9 @@
     import { fly } from 'svelte/transition';
     import ChevronRight from "svelte-material-icons/ChevronRight.svelte";
     import ChevronLeft from "svelte-material-icons/ChevronLeft.svelte";
+    import HumanGreetingVariant from "svelte-material-icons/HumanGreetingVariant.svelte";
+    import AccountQuestion from "svelte-material-icons/AccountQuestion.svelte";
+    import Alert from "svelte-material-icons/Alert.svelte";
     import Video from "svelte-material-icons/Video.svelte";
     import VideoOff from "svelte-material-icons/VideoOff.svelte";
     import MatchingAnim from '../../assets/MatchingAnim.svelte';
@@ -60,7 +63,8 @@
     {/if}
     {#if step === 1}
     <main class="step step1">
-        <h1>Welcome!</h1>
+        <h1>Welcome to PeerConnect!</h1>
+        <p>PeerConnect is a mentoring network that helps connect students who want to talk. Pick an option below to get started.</p>
         <div class="options">
             <button class="option" on:click={() => step1(true)}>
                 <h2>I need help.</h2>
@@ -83,6 +87,9 @@
         <h1>What do you want to do?</h1>
         <div class="options">
             <button class="option" on:click={() => { filterStore.set([{name: "Here to talk", category: "general"}]); step = 3}}>
+                <span class="icon">
+                    <HumanGreetingVariant />
+                </span>
                 <h2>I want to talk to somebody.</h2>
                 <p>You'll be matched with someone who's ready to listen.</p>
                 <span class="arrow">
@@ -90,6 +97,9 @@
                 </span>
             </button>
             <button class="option" on:click={() => { step = 2.4 }}>
+                <span class="icon">
+                    <AccountQuestion />
+                </span>
                 <h2>I need advice.</h2>
                 <p>Just want to ask a question? You'll be matched with someone knowledgable.</p>
                 <span class="arrow">
@@ -97,6 +107,9 @@
                 </span>
             </button>
             <button class="option" on:click={() => { step = 2.2 }}>
+                <span class="icon">
+                    <Alert />
+                </span>
                 <h2 style="color: red">It's urgent.</h2>
                 <p>Hotlines are available 24/7-- there's always someone available for you!</p>
                 <span class="arrow">
@@ -113,14 +126,15 @@
     {#if step === 2.4}
     <main class="step filters" in:fly|local={{x: 200, duration: 200}} out:fly|local={{x: -200, duration: 200}}>
         <div class="options">
-        <Filters filterStore={filterStore} />
-        <button class="option" on:click={() => step = 3}>
-            <h2>Next</h2>
-            <span class="arrow">
-                <ChevronRight />
-            </span>
-        </button>
-    </div>
+            <h1>What describes your perfect mentor?</h1>
+            <Filters filterStore={filterStore} />
+            <button class="option" on:click={() => step = 3}>
+                <h2>Next</h2>
+                <span class="arrow">
+                    <ChevronRight />
+                </span>
+            </button>
+        </div>
     </main>
     {:else if step === 3}
     <main class="step step3" in:fly|local={{x: 200, duration: 200}} out:fly|local={{x: -200, duration: 200}}>
@@ -172,7 +186,7 @@
         border: 0;
         color: black;
         font-weight: bold;
-        background-color: transparent;
+        background-color: rgba(255, 255, 255, 0.9);
         outline: none;
 
         display: flex;
@@ -184,9 +198,14 @@
     .step {
         min-width: min(100%, 500px);
         max-width: 500px;
-        margin: 0 auto;
+        margin: 0;
+        padding: 0 calc(calc(100% - min(100%, 500px)) / 2);
+        padding-bottom: 40px;
         position: absolute;
         top: 0;
+
+        overflow-y: auto;
+        height: calc(100% - 40px);
     }
     .step.hotlines {
         height: 100%;

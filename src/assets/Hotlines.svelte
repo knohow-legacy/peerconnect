@@ -2,7 +2,7 @@
     export let alignBottom = false;
 </script>
 
-<div class="hotlines" style={alignBottom ? "bottom: 0;" : ""}>
+<div class="hotlines" style={alignBottom ? "bottom: calc(2em + var(--safe-margin-bottom));" : ""}>
     <h3>Here if you need them</h3>
     <p><a href="https://sites.google.com/mrpk.org/musd-wellness-center/home?pli=1">MUSD Wellness Center</a></p>
     <p>NAMI Ventura County <a href="tel:8055006264">805-500-6264</a></p>
@@ -17,7 +17,6 @@
 <style>
     .hotlines {
         position: absolute;
-        margin-bottom: 2em;
         width: 100%;
         text-align: center;
     }

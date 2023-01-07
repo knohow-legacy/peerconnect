@@ -19,6 +19,9 @@
 
   --success: #64dd17;
   --danger: #dd2c00;
+
+  --safe-margin-bottom: 0px;
+  --safe-margin-bottom: env(safe-area-inset-bottom);
 }
 
 a {
@@ -35,7 +38,6 @@ body {
   display: flex;
   place-items: center;
   min-width: 320px;
-  min-height: 100vh;
   overflow: hidden;
 }
 

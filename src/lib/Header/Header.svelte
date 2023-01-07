@@ -1,11 +1,16 @@
 <script>
-
+    import HumanGreetingProximity from "svelte-material-icons/HumanGreetingProximity.svelte";
     import { view } from "../../GlobalStore";
 
 </script>
 
 <header>
-    <h2 on:click={() => view.set("client")}>PeerConnect</h2>
+    <h2 on:click={() => view.set("client")}>
+        <span>
+            <HumanGreetingProximity />
+        </span>
+        PeerConnect
+    </h2>
 </header>
 
 <style>
@@ -19,5 +24,13 @@
         line-height: 50px;
         cursor: pointer;
         user-select: none;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+    }
+    header h2 span {
+        font-size: 1.8em;
     }
 </style>

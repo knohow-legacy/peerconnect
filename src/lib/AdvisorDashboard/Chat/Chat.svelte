@@ -1,6 +1,6 @@
 <script lang="ts">
     import { userData } from "../../../GlobalStore";
-    import Filters from "../../Filters/Filters.svelte";
+    import ChatMessage from "./ChatMessage.svelte";
     import { writable } from "svelte/store";
     import { onDestroy } from "svelte";
     import API from "../../../API";
@@ -34,7 +34,7 @@
     <h2>Chat</h2>
     <div class="chatScrollable">
         {#each $chatMsgsStore as msg}
-        <div style:color={(msg.author === $userData.name || msg.author === "You") ? "#777" : "black"}><span>{msg.time.toLocaleTimeString()}</span> {msg.author}: {msg.text}</div>
+            <ChatMessage msg={msg} />
         {/each}
         {#if $chatMsgsStore.length === 0}
             <div style="text-align: center; color: #aaa;">No messages yet</div>
