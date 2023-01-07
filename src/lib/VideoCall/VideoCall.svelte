@@ -711,6 +711,10 @@
       width: calc(50vh * calc(9 / 16));
       height: 50vh;
       z-index: 5;
+      transition: opacity 0.2s ease-in-out;
+    }
+    .miniPlayer .myWindow:hover {
+        opacity: 0.2;
     }
     .miniPlayer .theirWindow {
       max-width: calc(100% - 10px);
@@ -722,21 +726,25 @@
 
 
     @media screen and (max-width: 1000px) {
-      .myWindow {
-        position: fixed !important;
-        filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
-        top: 10px;
-        right: 10px;
-        width: max(20vw, 20vh) !important;
-        height: calc(max(20vw, 20vh) * calc(16 / 9)) !important;
-        z-index: 5;
-      }
-      .theirWindow {
-        max-width: calc(100% - 10px);
-        max-height: calc(calc(100% - 10px) * calc(16 / 9));
-      }
-      .chatContainer {
-        display: none;
-      }
+        .myWindow {
+            position: fixed !important;
+            filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+            top: 10px;
+            right: 10px;
+            width: max(20vw, 20vh) !important;
+            height: calc(max(20vw, 20vh) * calc(16 / 9)) !important;
+            z-index: 5;transition: opacity 0.2s ease-in-out;
+        }
+        .myWindow:hover {
+            opacity: 0.2;
+        }
+        .theirWindow {
+            max-width: calc(100% - 10px);
+            height: 100%;
+            max-height: calc(calc(100% - 10px) * calc(16 / 9));
+        }
+        .chatContainer {
+            display: none;
+        }
     }
 </style>

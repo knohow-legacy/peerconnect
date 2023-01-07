@@ -1,13 +1,15 @@
 <script lang="ts">
+    import { fly } from 'svelte/transition';
     import ClientSteps from './lib/ClientSteps/ClientSteps.svelte';
     import Header from './lib/Header/Header.svelte';
     import VideoCall from './lib/VideoCall/VideoCall.svelte';
     import { view, userData, targetData } from './GlobalStore';
     import AdvisorDashboard from './lib/AdvisorDashboard/AdvisorDashboard.svelte';
     import API from './API';
-    import { fly } from 'svelte/transition';
+    import PostCall from './lib/VideoCall/PostCall.svelte';
     let myId, theirId;
     let defaults = {video: true, audio: true}
+    let postCallUser = null;
 
     // google sign in
     function decodeJwtResponse(token) {
@@ -57,6 +59,9 @@
 </svelte:head>
 
 <Header />
+{#if postCallUser}
+    <PostCall user={postCallUser} onRating={() => postCallUser = null} />
+{/if}
 {#if $view === 'client'}
     {#if !$targetData}
     <ClientSteps />
@@ -64,7 +69,7 @@
     <VideoCall
         userData={$userData}
         targetData={$targetData}
-        onHangup={() => { targetData.set(null)}}
+        onHangup={() => { postCallUser = {id: $targetData.id, name: $targetData.name, pfp: $targetData.pfp}; targetData.set(null)}}
         defaults={defaults}
     />
     {/if}

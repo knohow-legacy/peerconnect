@@ -2,10 +2,11 @@ import axios from "axios";
 import { get } from "svelte/store";
 import { userData } from "./GlobalStore";
 // peerconnect-backend.azurewebsites.net
-export const ENDPOINT = import.meta.env.DEV ? 
+let forcePROD = true;
+export const ENDPOINT = import.meta.env.DEV && !forcePROD ? 
     'http://localhost:8080/api' :
     'https://peerconnect-backend.azurewebsites.net/api';
-export const WS_ENDPOINT = import.meta.env.DEV ? 
+export const WS_ENDPOINT = import.meta.env.DEV && !forcePROD ? 
     'ws://localhost:8080' :
     'wss://peerconnect-backend.azurewebsites.net';
 
@@ -148,9 +149,9 @@ class APIBase {
         await this.POST(`${ENDPOINT}/leave-queue`, {id: user.id});
     }
 
-    /* MENTOR */
+    /* ADVISOR */
     /**
-     * [MENTOR] Fetches a list of potential clients.
+     * [ADVISOR] Fetches a list of potential clients.
      * @returns a list of potential clients.
      */
     async fetchClientList() {
@@ -163,7 +164,7 @@ class APIBase {
     }
 
     /**
-     * [MENTOR] Accepts the client with the given ID.
+     * [ADVISOR] Accepts the client with the given ID.
      */
     async acceptCall(id: string) {
         let user = get(userData);
@@ -175,7 +176,7 @@ class APIBase {
     }
 
     /**
-     * [MENTOR] Updates the attributes of the mentor.
+     * [ADVISOR] Updates the attributes of the advisor.
      */
     async updateAttributes(attributes: {name: string, category: string}[]) {
         let user = get(userData);

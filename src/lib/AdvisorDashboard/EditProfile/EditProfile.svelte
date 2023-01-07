@@ -27,7 +27,7 @@
         <input type="text" value={$userData.name} disabled maxlength="32" />
     </div>
 
-    <Filters filterStore={userAttributesStore} isMentor={true} />
+    <Filters filterStore={userAttributesStore} isAdvisor={true} />
     <div style="height: 2em" />
 </aside>
 

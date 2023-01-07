@@ -9,7 +9,7 @@
             multiselect: true,
             options: [
                 "Here to talk",
-                "Certified mentor"
+                "Certified advisor"
             ]
         },
         {
@@ -78,18 +78,18 @@
     ]
 
     export let filterStore = writable([]);
-    export let isMentor = false;
+    export let isAdvisor = false;
 </script>
 
 <div>
     <h3>Select all that apply</h3>
     {#each filters as filter}
         {#if filter.displayName}
-        <h4>{filter.displayName} {isMentor && !filter.multiselect ? "(select one)" : ""}</h4>
+        <h4>{filter.displayName} {isAdvisor && !filter.multiselect ? "(select one)" : ""}</h4>
         {/if}
         <div class="filterList">
         {#each filter.options as option}
-            <Filter multiselect={isMentor ? filter.multiselect : true} category={filter.name} name={option} filterStore={filterStore} />
+            <Filter multiselect={isAdvisor ? filter.multiselect : true} category={filter.name} name={option} filterStore={filterStore} />
         {/each}
         </div>
     {/each}

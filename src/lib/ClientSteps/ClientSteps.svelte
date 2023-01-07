@@ -64,7 +64,7 @@
     {#if step === 1}
     <main class="step step1">
         <h1>Welcome to PeerConnect!</h1>
-        <p>PeerConnect is a mentoring network that helps connect students who want to talk. Pick an option below to get started.</p>
+        <p>PeerConnect is a network that helps connect students who want to talk to advisors who are ready to listen. Pick an option below to get started.</p>
         <div class="options">
             <button class="option" on:click={() => step1(true)}>
                 <h2>I need help.</h2>
@@ -126,7 +126,7 @@
     {#if step === 2.4}
     <main class="step filters" in:fly|local={{x: 200, duration: 200}} out:fly|local={{x: -200, duration: 200}}>
         <div class="options">
-            <h1>What describes your perfect mentor?</h1>
+            <h1>What describes your perfect advisor?</h1>
             <Filters filterStore={filterStore} />
             <button class="option" on:click={() => step = 3}>
                 <h2>Next</h2>
