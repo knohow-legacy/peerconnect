@@ -86,4 +86,9 @@
         gap: 10px;
         padding: 5px;
     }
+    .chatInputBox button {
+        line-height: 0;
+        padding: 10px;
+        font-size: 1.5em;
+    }
 </style>
